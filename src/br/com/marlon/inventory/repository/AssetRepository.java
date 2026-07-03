@@ -30,5 +30,4 @@ public class AssetRepository {
         assets.removeIf(asset -> asset.getId() == id);
     }
 
-
 }
