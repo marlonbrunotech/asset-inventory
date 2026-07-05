@@ -1,5 +1,6 @@
 package br.com.marlon.inventory.ui;
 
+import br.com.marlon.inventory.model.Asset;
 import br.com.marlon.inventory.service.AssetService;
 import java.util.Scanner;
 
@@ -19,7 +20,7 @@ public class MainMenu {
         System.out.println("         ASSET INVENTORY");
         System.out.println("====================================");
         System.out.println("1 - Register Asset");
-        System.out.println("2 - List Asset");
+        System.out.println("2 - List Assets");
         System.out.println("3 - Find Asset");
         System.out.println("4 - Update Asset");
         System.out.println("5 - Delete Asset");
@@ -36,7 +37,7 @@ public class MainMenu {
 
             switch (option){
                 case 1:
-                    System.out.println("Register Asset");
+                    registerAsset();
                     break;
 
                 case 2:
@@ -66,5 +67,32 @@ public class MainMenu {
 
         }
     }
+
+    private void registerAsset(){
+        System.out.println();
+        System.out.println("===== REGISTER NEW ASSET =====");
+        System.out.print("Enter Asset ID: ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("Enter Hostname: ");
+        String hostname = scanner.nextLine();
+        System.out.print("Enter Ip: ");
+        String ip = scanner.nextLine();
+        System.out.print("Enter Operating System: ");
+        String operatingSystem = scanner.nextLine();
+        System.out.print("Enter Manufacturer: ");
+        String manufacturer = scanner.nextLine();
+        System.out.print("Enter Model: ");
+        String model = scanner.nextLine();
+        System.out.print("Enter Responsible: ");
+        String responsible = scanner.nextLine();
+
+        Asset asset = new Asset(id, hostname, ip, operatingSystem, manufacturer, model, responsible);
+        service.save(asset);
+        System.out.println("Asset registered successfully!");
+
+
+    }
+
 
 }
