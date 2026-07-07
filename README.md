@@ -8,6 +8,12 @@ O Asset Inventory é uma aplicação desenvolvida para simular um sistema utiliz
 
 O objetivo do projeto é aplicar conceitos de desenvolvimento de software, criando uma base que futuramente poderá evoluir para uma solução corporativa envolvendo banco de dados, API REST, autenticação, autorização e funcionalidades relacionadas à segurança da informação.
 
+## Demonstração
+
+Abaixo está uma demonstração da aplicação em execução.
+
+![Asset Inventory Demo](assets/asset-inventory-demo.png)
+
 ## Funcionalidades atuais
 
 * Cadastro de assets
