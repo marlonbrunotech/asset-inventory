@@ -8,6 +8,7 @@ public class MainJava {
     public static void main(String[] args){
         AssetRepository repository = new AssetRepository();
         AssetService service = new AssetService(repository);
-        MainMenu mainMenu = new MainMenu(service);
+        MainMenu menu = new MainMenu(service);
+        menu.start();
     }
 }

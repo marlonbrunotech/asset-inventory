@@ -24,7 +24,7 @@ public class AssetService {
     public Asset findById(int id){
         Asset asset = repository.findById(id);
         if(asset == null){
-            throw new IllegalArgumentException("Ativo não encontrado.");
+            throw new IllegalArgumentException("Asset not found.");
         }
 
         return asset;
