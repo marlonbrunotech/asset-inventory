@@ -36,6 +36,7 @@ public class MainMenu {
         while (option != 0) {
             showMenu();
             option = scanner.nextInt();
+            scanner.nextLine();
 
             switch (option) {
                 case 1:
@@ -73,23 +74,25 @@ public class MainMenu {
     private void registerAsset() {
         System.out.println();
         System.out.println("===== REGISTER NEW ASSET =====");
-        System.out.print("Enter Asset ID: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();
         System.out.print("Enter Hostname: ");
         String hostname = scanner.nextLine();
+
         System.out.print("Enter Ip: ");
         String ip = scanner.nextLine();
+
         System.out.print("Enter Operating System: ");
         String operatingSystem = scanner.nextLine();
+
         System.out.print("Enter Manufacturer: ");
         String manufacturer = scanner.nextLine();
+
         System.out.print("Enter Model: ");
         String model = scanner.nextLine();
+
         System.out.print("Enter Responsible: ");
         String responsible = scanner.nextLine();
 
-        Asset asset = new Asset(id, hostname, ip, operatingSystem, manufacturer, model, responsible);
+        Asset asset = new Asset(hostname, ip, operatingSystem, manufacturer, model, responsible);
         service.save(asset);
         System.out.println("Asset registered successfully!");
 

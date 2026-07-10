@@ -13,6 +13,15 @@ public class Asset {
     public Asset() {
     }
 
+    public Asset(String hostname, String ip, String operatingSystem, String manufacturer, String model, String responsible) {
+        this.hostname = hostname;
+        this.ip = ip;
+        this.operatingSystem = operatingSystem;
+        this.manufacturer = manufacturer;
+        this.model = model;
+        this.responsible = responsible;
+    }
+
     public Asset(int id, String hostname, String ip, String operatingSystem, String manufacturer, String model, String responsible) {
         this.id = id;
         this.hostname = hostname;
