@@ -10,12 +10,6 @@ import java.sql.SQLException;
 
 public class MainJava {
     public static void main(String[] args){
-        try (Connection connection = DatabaseConnection.getConnection()){
-            System.out.println("Database connection successful!");
-
-        }catch (SQLException e){
-            throw new RuntimeException("Error closing the database connection.", e);
-        }
 
         AssetRepository repository = new AssetRepository();
         AssetService service = new AssetService(repository);

@@ -37,14 +37,8 @@ public class AssetService {
     }
 
     public void update(Asset updatedAsset){
-        Asset existingAsset = findById(updatedAsset.getId());
-
-        existingAsset.setHostname(updatedAsset.getHostname());
-        existingAsset.setIp(updatedAsset.getIp());
-        existingAsset.setOperatingSystem(updatedAsset.getOperatingSystem());
-        existingAsset.setManufacturer(updatedAsset.getManufacturer());
-        existingAsset.setModel(updatedAsset.getModel());
-        existingAsset.setResponsible(updatedAsset.getResponsible());
+        findById(updatedAsset.getId());
+        repository.update(updatedAsset);
 
     }
 
