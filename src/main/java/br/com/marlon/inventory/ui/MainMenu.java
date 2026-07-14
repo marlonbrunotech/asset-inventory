@@ -1,6 +1,7 @@
 package br.com.marlon.inventory.ui;
 
 import br.com.marlon.inventory.model.Asset;
+import br.com.marlon.inventory.model.AssetStatus;
 import br.com.marlon.inventory.service.AssetService;
 
 import java.util.List;
@@ -92,7 +93,9 @@ public class MainMenu {
         System.out.print("Enter Responsible: ");
         String responsible = scanner.nextLine();
 
-        Asset asset = new Asset(hostname, ip, operatingSystem, manufacturer, model, responsible);
+        AssetStatus status = readAssetStatus();
+
+        Asset asset = new Asset(hostname, ip, operatingSystem, manufacturer, model, responsible, status);
         service.save(asset);
         System.out.println("Asset registered successfully!");
 
@@ -116,6 +119,7 @@ public class MainMenu {
             System.out.println("Manufacturer: " + asset.getManufacturer());
             System.out.println("Model: " + asset.getModel());
             System.out.println("Responsible: " + asset.getResponsible());
+            System.out.println("Status: " + asset.getStatus());
 
         }
 
@@ -140,6 +144,7 @@ public class MainMenu {
             System.out.println("Manufacturer: " + asset.getManufacturer());
             System.out.println("Model: " + asset.getModel());
             System.out.println("Responsible: " + asset.getResponsible());
+            System.out.println("Status: " + asset.getStatus());
 
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
@@ -174,7 +179,9 @@ public class MainMenu {
             System.out.print("Enter new Responsible: ");
             String responsible = scanner.nextLine();
 
-            Asset updatedAsset = new Asset(asset.getId(), hostname, ip, operatingSystem, manufacturer, model, responsible);
+            AssetStatus status = readAssetStatus();
+
+            Asset updatedAsset = new Asset(asset.getId(), hostname, ip, operatingSystem, manufacturer, model, responsible, status);
             service.update(updatedAsset);
             System.out.println("Asset updated successfully!");
 
@@ -185,7 +192,7 @@ public class MainMenu {
 
         }
 
-        private void deleteAsset(){
+        private void deleteAsset() {
             System.out.println();
             System.out.print("Enter Asset ID for Delete: ");
 
@@ -193,7 +200,7 @@ public class MainMenu {
             scanner.nextLine();
 
             try {
-                Asset asset = service.findById(id);
+                service.findById(id);
                 service.deleteById(id);
                 System.out.println("Asset Deleted Successfully!");
             }
@@ -204,6 +211,29 @@ public class MainMenu {
 
 
 
+    }
+
+    private AssetStatus readAssetStatus() {
+        System.out.println("Available Statuses:");
+        System.out.println("1 - ACTIVE");
+        System.out.println("2 - INACTIVE");
+        System.out.println("3 - MAINTENANCE");
+        System.out.println("4 - LOST");
+        System.out.println("5 - DISPOSED");
+        System.out.print("Choose Status: ");
+
+        int option = scanner.nextInt();
+        scanner.nextLine();
+
+        return switch (option) {
+            case 1 -> AssetStatus.ACTIVE;
+            case 2 -> AssetStatus.INACTIVE;
+            case 3 -> AssetStatus.MAINTENANCE;
+            case 4 -> AssetStatus.LOST;
+            case 5 -> AssetStatus.DISPOSED;
+
+            default -> throw new IllegalArgumentException("Invalid status option.");
+        };
     }
 }
 

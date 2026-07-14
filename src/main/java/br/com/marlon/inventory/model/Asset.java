@@ -9,20 +9,22 @@ public class Asset {
     private String manufacturer;
     private String model;
     private String responsible;
+    private AssetStatus status;
 
     public Asset() {
     }
 
-    public Asset(String hostname, String ip, String operatingSystem, String manufacturer, String model, String responsible) {
+    public Asset(String hostname, String ip, String operatingSystem, String manufacturer, String model, String responsible, AssetStatus status) {
         this.hostname = hostname;
         this.ip = ip;
         this.operatingSystem = operatingSystem;
         this.manufacturer = manufacturer;
         this.model = model;
         this.responsible = responsible;
+        this.status = status;
     }
 
-    public Asset(int id, String hostname, String ip, String operatingSystem, String manufacturer, String model, String responsible) {
+    public Asset(int id, String hostname, String ip, String operatingSystem, String manufacturer, String model, String responsible, AssetStatus status) {
         this.id = id;
         this.hostname = hostname;
         this.ip = ip;
@@ -30,6 +32,7 @@ public class Asset {
         this.manufacturer = manufacturer;
         this.model = model;
         this.responsible = responsible;
+        this.status = status;
     }
 
     public int getId() {
@@ -86,5 +89,13 @@ public class Asset {
 
     public void setResponsible(String responsible) {
         this.responsible = responsible;
+    }
+
+    public AssetStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(AssetStatus status) {
+        this.status = status;
     }
 }

@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import br.com.marlon.inventory.model.AssetStatus;
 
 public class AssetRepository {
 
@@ -20,9 +21,10 @@ public class AssetRepository {
                     operating_system,
                     manufacturer,
                     model,
-                    responsible
+                    responsible,
+                    status
                 )
-                VALUES (?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
                 """;
         try (Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)){
@@ -33,6 +35,7 @@ public class AssetRepository {
             statement.setString(4, asset.getManufacturer());
             statement.setString(5, asset.getModel());
             statement.setString(6, asset.getResponsible());
+            statement.setString(7, asset.getStatus().name());
 
             statement.executeUpdate();
 
@@ -58,8 +61,9 @@ public class AssetRepository {
                 String manufacturer = resultSet.getString("manufacturer");
                 String model = resultSet.getString("model");
                 String responsible = resultSet.getString("responsible");
+                AssetStatus status = AssetStatus.valueOf(resultSet.getString("status"));
 
-                Asset asset = new Asset(id, hostname, ip, operatingSystem, manufacturer, model, responsible);
+                Asset asset = new Asset(id, hostname, ip, operatingSystem, manufacturer, model, responsible, status);
 
                 assets.add(asset);
 
@@ -90,8 +94,9 @@ public class AssetRepository {
                      String manufacturer = resultSet.getString("manufacturer");
                      String model = resultSet.getString("model");
                      String responsible = resultSet.getString("responsible");
+                     AssetStatus status = AssetStatus.valueOf(resultSet.getString("status"));
 
-                     Asset asset = new Asset(assetId, hostname, ip, operatingSystem, manufacturer, model, responsible);
+                     Asset asset = new Asset(assetId, hostname, ip, operatingSystem, manufacturer, model, responsible, status);
                      return asset;
 
                  }
@@ -120,7 +125,7 @@ public class AssetRepository {
     }
 
     public void update(Asset asset){
-        String sql = "UPDATE assets SET hostname = ?, ip = ?, operating_system = ?, manufacturer = ?, model = ?, responsible = ? WHERE id = ?";
+        String sql = "UPDATE assets SET hostname = ?, ip = ?, operating_system = ?, manufacturer = ?, model = ?, responsible = ?, status = ? WHERE id = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)){
@@ -131,7 +136,8 @@ public class AssetRepository {
                  statement.setString(4, asset.getManufacturer());
                  statement.setString(5, asset.getModel());
                  statement.setString(6, asset.getResponsible());
-                 statement.setInt(7, asset.getId());
+                 statement.setString(7, asset.getStatus().name());
+                 statement.setInt(8, asset.getId());
 
                  statement.executeUpdate();
 
