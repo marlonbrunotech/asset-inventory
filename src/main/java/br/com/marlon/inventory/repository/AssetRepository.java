@@ -23,9 +23,10 @@ public class AssetRepository {
                     model,
                     responsible,
                     status,
-                    location
+                    location,
+                    last_logged_user
                 )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
         try (Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)){
@@ -38,6 +39,7 @@ public class AssetRepository {
             statement.setString(6, asset.getResponsible());
             statement.setString(7, asset.getStatus().name());
             statement.setString(8, asset.getLocation());
+            statement.setString(9, asset.getLastLoggedUser());
 
             statement.executeUpdate();
 
@@ -65,8 +67,9 @@ public class AssetRepository {
                 String responsible = resultSet.getString("responsible");
                 AssetStatus status = AssetStatus.valueOf(resultSet.getString("status"));
                 String location = resultSet.getString("location");
+                String lastLoggedUser = resultSet.getString("last_logged_user");
 
-                Asset asset = new Asset(id, hostname, ip, operatingSystem, manufacturer, model, responsible, status, location);
+                Asset asset = new Asset(id, hostname, ip, operatingSystem, manufacturer, model, responsible, status, location, lastLoggedUser);
 
                 assets.add(asset);
 
@@ -99,8 +102,9 @@ public class AssetRepository {
                      String responsible = resultSet.getString("responsible");
                      AssetStatus status = AssetStatus.valueOf(resultSet.getString("status"));
                      String location = resultSet.getString("location");
+                     String lastLoggedUser = resultSet.getString("last_logged_user");
 
-                     Asset asset = new Asset(assetId, hostname, ip, operatingSystem, manufacturer, model, responsible, status, location);
+                     Asset asset = new Asset(assetId, hostname, ip, operatingSystem, manufacturer, model, responsible, status, location, lastLoggedUser);
                      return asset;
 
                  }
@@ -129,7 +133,7 @@ public class AssetRepository {
     }
 
     public void update(Asset asset){
-        String sql = "UPDATE assets SET hostname = ?, ip = ?, operating_system = ?, manufacturer = ?, model = ?, responsible = ?, status = ?, location = ? WHERE id = ?";
+        String sql = "UPDATE assets SET hostname = ?, ip = ?, operating_system = ?, manufacturer = ?, model = ?, responsible = ?, status = ?, location = ?, last_logged_user = ? WHERE id = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)){
@@ -142,7 +146,8 @@ public class AssetRepository {
                  statement.setString(6, asset.getResponsible());
                  statement.setString(7, asset.getStatus().name());
                  statement.setString(8, asset.getLocation());
-                 statement.setInt(9, asset.getId());
+                 statement.setString(9, asset.getLastLoggedUser());
+                 statement.setInt(10, asset.getId());
 
 
                  statement.executeUpdate();

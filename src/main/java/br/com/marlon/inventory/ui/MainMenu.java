@@ -98,7 +98,10 @@ public class MainMenu {
         System.out.print("Enter Location: ");
         String location = scanner.nextLine();
 
-        Asset asset = new Asset(hostname, ip, operatingSystem, manufacturer, model, responsible, status, location);
+        System.out.print("Enter Last Logged User: ");
+        String lastLoggedUser = scanner.nextLine();
+
+        Asset asset = new Asset(hostname, ip, operatingSystem, manufacturer, model, responsible, status, location, lastLoggedUser);
         service.save(asset);
         System.out.println("Asset registered successfully!");
 
@@ -124,6 +127,7 @@ public class MainMenu {
             System.out.println("Responsible: " + asset.getResponsible());
             System.out.println("Status: " + asset.getStatus());
             System.out.println("Location: " + asset.getLocation());
+            System.out.println("Last Logged User: " + asset.getLastLoggedUser());
 
         }
 
@@ -150,6 +154,7 @@ public class MainMenu {
             System.out.println("Responsible: " + asset.getResponsible());
             System.out.println("Status: " + asset.getStatus());
             System.out.println("Location: " + asset.getLocation());
+            System.out.println("Last Logged User: " + asset.getLastLoggedUser());
 
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
@@ -186,8 +191,10 @@ public class MainMenu {
             AssetStatus status = readAssetStatus();
             System.out.print("Enter new Location: ");
             String location = scanner.nextLine();
+            System.out.print("Enter new Last Logged User: ");
+            String lastLoggedUser = scanner.nextLine();
 
-            Asset updatedAsset = new Asset(asset.getId(), hostname, ip, operatingSystem, manufacturer, model, responsible, status, location);
+            Asset updatedAsset = new Asset(asset.getId(), hostname, ip, operatingSystem, manufacturer, model, responsible, status, location, lastLoggedUser);
             service.update(updatedAsset);
             System.out.println("Asset updated successfully!");
 

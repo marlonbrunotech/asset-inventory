@@ -9,13 +9,14 @@ public class Asset {
     private String manufacturer;
     private String model;
     private String responsible;
-    private String location;
     private AssetStatus status;
+    private String location;
+    private String lastLoggedUser;
 
     public Asset() {
     }
 
-    public Asset(String hostname, String ip, String operatingSystem, String manufacturer, String model, String responsible, AssetStatus status, String location) {
+    public Asset(String hostname, String ip, String operatingSystem, String manufacturer, String model, String responsible, AssetStatus status, String location, String lastLoggedUser) {
         this.hostname = hostname;
         this.ip = ip;
         this.operatingSystem = operatingSystem;
@@ -24,9 +25,10 @@ public class Asset {
         this.responsible = responsible;
         this.status = status;
         this.location = location;
+        this.lastLoggedUser = lastLoggedUser;
     }
 
-    public Asset(int id, String hostname, String ip, String operatingSystem, String manufacturer, String model, String responsible, AssetStatus status, String location) {
+    public Asset(int id, String hostname, String ip, String operatingSystem, String manufacturer, String model, String responsible, AssetStatus status, String location, String lastLoggedUser) {
         this.id = id;
         this.hostname = hostname;
         this.ip = ip;
@@ -36,6 +38,7 @@ public class Asset {
         this.responsible = responsible;
         this.status = status;
         this.location = location;
+        this.lastLoggedUser = lastLoggedUser;
     }
 
     public int getId() {
@@ -108,5 +111,13 @@ public class Asset {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getLastLoggedUser() {
+        return lastLoggedUser;
+    }
+
+    public void setLastLoggedUser(String lastLoggedUser) {
+        this.lastLoggedUser = lastLoggedUser;
     }
 }
