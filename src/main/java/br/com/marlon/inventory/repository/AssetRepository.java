@@ -6,10 +6,9 @@ import br.com.marlon.inventory.model.AssetStatus;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.Date;
-import java.util.Locale;
 
 public class AssetRepository {
 
@@ -25,9 +24,10 @@ public class AssetRepository {
                     status,
                     location,
                     last_logged_user,
-                    purchase_date
+                    purchase_date,
+                    last_seen
                 )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
         try (Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)){
@@ -42,6 +42,7 @@ public class AssetRepository {
             statement.setString(8, asset.getLocation());
             statement.setString(9, asset.getLastLoggedUser());
             statement.setDate(10, Date.valueOf(asset.getPurchaseDate()));
+            statement.setTimestamp(11, Timestamp.valueOf(asset.getLastSeen()));
 
             statement.executeUpdate();
 
@@ -78,7 +79,14 @@ public class AssetRepository {
                     purchaseDate = sqlPurchaseDate.toLocalDate();
                 }
 
-                Asset asset = new Asset(id, hostname, ip, operatingSystem, manufacturer, model, responsible, status, location, lastLoggedUser, purchaseDate);
+                Timestamp sqlLastSeen = resultSet.getTimestamp("last_seen");
+                LocalDateTime lastSeen = null;
+
+                if (sqlLastSeen != null){
+                    lastSeen = sqlLastSeen.toLocalDateTime();
+                }
+
+                Asset asset = new Asset(id, hostname, ip, operatingSystem, manufacturer, model, responsible, status, location, lastLoggedUser, purchaseDate, lastSeen);
 
                 assets.add(asset);
 
@@ -120,7 +128,14 @@ public class AssetRepository {
                          purchaseDate = sqlPurchaseDate.toLocalDate();
                      }
 
-                     Asset asset = new Asset(assetId, hostname, ip, operatingSystem, manufacturer, model, responsible, status, location, lastLoggedUser, purchaseDate);
+                     Timestamp sqlLastSeen = resultSet.getTimestamp("last_seen");
+                     LocalDateTime lastSeen = null;
+
+                     if (sqlLastSeen != null){
+                         lastSeen = sqlLastSeen.toLocalDateTime();
+                     }
+
+                     Asset asset = new Asset(assetId, hostname, ip, operatingSystem, manufacturer, model, responsible, status, location, lastLoggedUser, purchaseDate, lastSeen);
                      return asset;
 
                  }
@@ -149,7 +164,7 @@ public class AssetRepository {
     }
 
     public void update(Asset asset){
-        String sql = "UPDATE assets SET hostname = ?, ip = ?, operating_system = ?, manufacturer = ?, model = ?, responsible = ?, status = ?, location = ?, last_logged_user = ?, purchase_date = ? WHERE id = ?";
+        String sql = "UPDATE assets SET hostname = ?, ip = ?, operating_system = ?, manufacturer = ?, model = ?, responsible = ?, status = ?, location = ?, last_logged_user = ?, purchase_date = ?, last_seen = ? WHERE id = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)){
@@ -164,7 +179,8 @@ public class AssetRepository {
                  statement.setString(8, asset.getLocation());
                  statement.setString(9, asset.getLastLoggedUser());
                  statement.setDate(10, Date.valueOf(asset.getPurchaseDate()));
-                 statement.setInt(11, asset.getId());
+                 statement.setTimestamp(11, Timestamp.valueOf(asset.getLastSeen()));
+                 statement.setInt(12, asset.getId());
 
 
 

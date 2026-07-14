@@ -1,6 +1,7 @@
 package br.com.marlon.inventory.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Asset {
 
@@ -15,11 +16,12 @@ public class Asset {
     private String location;
     private String lastLoggedUser;
     private LocalDate purchaseDate;
+    private LocalDateTime lastSeen;
 
     public Asset() {
     }
 
-    public Asset(String hostname, String ip, String operatingSystem, String manufacturer, String model, String responsible, AssetStatus status, String location, String lastLoggedUser, LocalDate purchaseDate) {
+    public Asset(String hostname, String ip, String operatingSystem, String manufacturer, String model, String responsible, AssetStatus status, String location, String lastLoggedUser, LocalDate purchaseDate, LocalDateTime lastSeen) {
         this.hostname = hostname;
         this.ip = ip;
         this.operatingSystem = operatingSystem;
@@ -30,9 +32,10 @@ public class Asset {
         this.location = location;
         this.lastLoggedUser = lastLoggedUser;
         this.purchaseDate = purchaseDate;
+        this.lastSeen = lastSeen;
     }
 
-    public Asset(int id, String hostname, String ip, String operatingSystem, String manufacturer, String model, String responsible, AssetStatus status, String location, String lastLoggedUser, LocalDate purchaseDate) {
+    public Asset(int id, String hostname, String ip, String operatingSystem, String manufacturer, String model, String responsible, AssetStatus status, String location, String lastLoggedUser, LocalDate purchaseDate, LocalDateTime lastSeen) {
         this.id = id;
         this.hostname = hostname;
         this.ip = ip;
@@ -44,6 +47,7 @@ public class Asset {
         this.location = location;
         this.lastLoggedUser = lastLoggedUser;
         this.purchaseDate = purchaseDate;
+        this.lastSeen = lastSeen;
     }
 
     public int getId() {
@@ -132,5 +136,13 @@ public class Asset {
 
     public void setPurchaseDate(LocalDate purchaseDate) {
         this.purchaseDate = purchaseDate;
+    }
+
+    public LocalDateTime getLastSeen() {
+        return lastSeen;
+    }
+
+    public void setLastSeen(LocalDateTime lastSeen) {
+        this.lastSeen = lastSeen;
     }
 }

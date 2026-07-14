@@ -5,6 +5,7 @@ import br.com.marlon.inventory.model.AssetStatus;
 import br.com.marlon.inventory.service.AssetService;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
 
@@ -103,8 +104,9 @@ public class MainMenu {
         String lastLoggedUser = scanner.nextLine();
 
         LocalDate purchaseDate = readPurchaseDate();
+        LocalDateTime lastSeen = readLastSeen();
 
-        Asset asset = new Asset(hostname, ip, operatingSystem, manufacturer, model, responsible, status, location, lastLoggedUser, purchaseDate);
+        Asset asset = new Asset(hostname, ip, operatingSystem, manufacturer, model, responsible, status, location, lastLoggedUser, purchaseDate, lastSeen);
         service.save(asset);
         System.out.println("Asset registered successfully!");
 
@@ -132,6 +134,7 @@ public class MainMenu {
             System.out.println("Location: " + asset.getLocation());
             System.out.println("Last Logged User: " + asset.getLastLoggedUser());
             System.out.println("Purchase Date: " + asset.getPurchaseDate());
+            System.out.println("Last Seen: " + asset.getLastSeen());
 
         }
 
@@ -160,6 +163,7 @@ public class MainMenu {
             System.out.println("Location: " + asset.getLocation());
             System.out.println("Last Logged User: " + asset.getLastLoggedUser());
             System.out.println("Purchase Date: " + asset.getPurchaseDate());
+            System.out.println("Last Seen: " + asset.getLastSeen());
 
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
@@ -199,8 +203,9 @@ public class MainMenu {
             System.out.print("Enter new Last Logged User: ");
             String lastLoggedUser = scanner.nextLine();
             LocalDate purchaseDate = readPurchaseDate();
+            LocalDateTime lastSeen = readLastSeen();
 
-            Asset updatedAsset = new Asset(asset.getId(), hostname, ip, operatingSystem, manufacturer, model, responsible, status, location, lastLoggedUser, purchaseDate);
+            Asset updatedAsset = new Asset(asset.getId(), hostname, ip, operatingSystem, manufacturer, model, responsible, status, location, lastLoggedUser, purchaseDate, lastSeen);
             service.update(updatedAsset);
             System.out.println("Asset updated successfully!");
 
@@ -264,8 +269,15 @@ public class MainMenu {
         return purchaseDate;
 
     }
+
+    private LocalDateTime readLastSeen(){
+        System.out.print("Enter Last Seen Date (YYYY-MM-DDTHH:mm): ");
+
+        String lastSeenInput = scanner.nextLine();
+        LocalDateTime lastSeen = LocalDateTime.parse(lastSeenInput);
+
+        return lastSeen;
+    }
 }
-
-
 
 
