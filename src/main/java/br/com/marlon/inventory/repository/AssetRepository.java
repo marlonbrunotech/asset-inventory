@@ -2,6 +2,7 @@ package br.com.marlon.inventory.repository;
 
 import br.com.marlon.inventory.database.DatabaseConnection;
 import br.com.marlon.inventory.model.Asset;
+import br.com.marlon.inventory.model.AssetStatus;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,7 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import br.com.marlon.inventory.model.AssetStatus;
 
 public class AssetRepository {
 
@@ -22,9 +22,10 @@ public class AssetRepository {
                     manufacturer,
                     model,
                     responsible,
-                    status
+                    status,
+                    location
                 )
-                VALUES (?, ?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
                 """;
         try (Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)){
@@ -36,6 +37,7 @@ public class AssetRepository {
             statement.setString(5, asset.getModel());
             statement.setString(6, asset.getResponsible());
             statement.setString(7, asset.getStatus().name());
+            statement.setString(8, asset.getLocation());
 
             statement.executeUpdate();
 
@@ -62,8 +64,9 @@ public class AssetRepository {
                 String model = resultSet.getString("model");
                 String responsible = resultSet.getString("responsible");
                 AssetStatus status = AssetStatus.valueOf(resultSet.getString("status"));
+                String location = resultSet.getString("location");
 
-                Asset asset = new Asset(id, hostname, ip, operatingSystem, manufacturer, model, responsible, status);
+                Asset asset = new Asset(id, hostname, ip, operatingSystem, manufacturer, model, responsible, status, location);
 
                 assets.add(asset);
 
@@ -95,14 +98,15 @@ public class AssetRepository {
                      String model = resultSet.getString("model");
                      String responsible = resultSet.getString("responsible");
                      AssetStatus status = AssetStatus.valueOf(resultSet.getString("status"));
+                     String location = resultSet.getString("location");
 
-                     Asset asset = new Asset(assetId, hostname, ip, operatingSystem, manufacturer, model, responsible, status);
+                     Asset asset = new Asset(assetId, hostname, ip, operatingSystem, manufacturer, model, responsible, status, location);
                      return asset;
 
                  }
 
         }catch (SQLException e){
-                 throw new RuntimeException("Asset not found.", e);
+                 throw new RuntimeException("Error finding asset by id.", e);
         }
 
         return null;
@@ -125,7 +129,7 @@ public class AssetRepository {
     }
 
     public void update(Asset asset){
-        String sql = "UPDATE assets SET hostname = ?, ip = ?, operating_system = ?, manufacturer = ?, model = ?, responsible = ?, status = ? WHERE id = ?";
+        String sql = "UPDATE assets SET hostname = ?, ip = ?, operating_system = ?, manufacturer = ?, model = ?, responsible = ?, status = ?, location = ? WHERE id = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)){
@@ -137,7 +141,9 @@ public class AssetRepository {
                  statement.setString(5, asset.getModel());
                  statement.setString(6, asset.getResponsible());
                  statement.setString(7, asset.getStatus().name());
-                 statement.setInt(8, asset.getId());
+                 statement.setString(8, asset.getLocation());
+                 statement.setInt(9, asset.getId());
+
 
                  statement.executeUpdate();
 

@@ -95,7 +95,10 @@ public class MainMenu {
 
         AssetStatus status = readAssetStatus();
 
-        Asset asset = new Asset(hostname, ip, operatingSystem, manufacturer, model, responsible, status);
+        System.out.print("Enter Location: ");
+        String location = scanner.nextLine();
+
+        Asset asset = new Asset(hostname, ip, operatingSystem, manufacturer, model, responsible, status, location);
         service.save(asset);
         System.out.println("Asset registered successfully!");
 
@@ -120,6 +123,7 @@ public class MainMenu {
             System.out.println("Model: " + asset.getModel());
             System.out.println("Responsible: " + asset.getResponsible());
             System.out.println("Status: " + asset.getStatus());
+            System.out.println("Location: " + asset.getLocation());
 
         }
 
@@ -145,6 +149,7 @@ public class MainMenu {
             System.out.println("Model: " + asset.getModel());
             System.out.println("Responsible: " + asset.getResponsible());
             System.out.println("Status: " + asset.getStatus());
+            System.out.println("Location: " + asset.getLocation());
 
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
@@ -178,10 +183,11 @@ public class MainMenu {
             String model = scanner.nextLine();
             System.out.print("Enter new Responsible: ");
             String responsible = scanner.nextLine();
-
             AssetStatus status = readAssetStatus();
+            System.out.print("Enter new Location: ");
+            String location = scanner.nextLine();
 
-            Asset updatedAsset = new Asset(asset.getId(), hostname, ip, operatingSystem, manufacturer, model, responsible, status);
+            Asset updatedAsset = new Asset(asset.getId(), hostname, ip, operatingSystem, manufacturer, model, responsible, status, location);
             service.update(updatedAsset);
             System.out.println("Asset updated successfully!");
 
