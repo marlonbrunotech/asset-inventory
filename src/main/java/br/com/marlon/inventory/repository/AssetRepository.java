@@ -4,12 +4,12 @@ import br.com.marlon.inventory.database.DatabaseConnection;
 import br.com.marlon.inventory.model.Asset;
 import br.com.marlon.inventory.model.AssetStatus;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Date;
+import java.util.Locale;
 
 public class AssetRepository {
 
@@ -24,9 +24,10 @@ public class AssetRepository {
                     responsible,
                     status,
                     location,
-                    last_logged_user
+                    last_logged_user,
+                    purchase_date
                 )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
         try (Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)){
@@ -40,6 +41,7 @@ public class AssetRepository {
             statement.setString(7, asset.getStatus().name());
             statement.setString(8, asset.getLocation());
             statement.setString(9, asset.getLastLoggedUser());
+            statement.setDate(10, Date.valueOf(asset.getPurchaseDate()));
 
             statement.executeUpdate();
 
@@ -69,7 +71,14 @@ public class AssetRepository {
                 String location = resultSet.getString("location");
                 String lastLoggedUser = resultSet.getString("last_logged_user");
 
-                Asset asset = new Asset(id, hostname, ip, operatingSystem, manufacturer, model, responsible, status, location, lastLoggedUser);
+                Date sqlPurchaseDate = resultSet.getDate("purchase_date");
+                LocalDate purchaseDate = null;
+
+                if (sqlPurchaseDate != null){
+                    purchaseDate = sqlPurchaseDate.toLocalDate();
+                }
+
+                Asset asset = new Asset(id, hostname, ip, operatingSystem, manufacturer, model, responsible, status, location, lastLoggedUser, purchaseDate);
 
                 assets.add(asset);
 
@@ -104,7 +113,14 @@ public class AssetRepository {
                      String location = resultSet.getString("location");
                      String lastLoggedUser = resultSet.getString("last_logged_user");
 
-                     Asset asset = new Asset(assetId, hostname, ip, operatingSystem, manufacturer, model, responsible, status, location, lastLoggedUser);
+                     Date sqlPurchaseDate = resultSet.getDate("purchase_date");
+                     LocalDate purchaseDate = null;
+
+                     if (sqlPurchaseDate != null){
+                         purchaseDate = sqlPurchaseDate.toLocalDate();
+                     }
+
+                     Asset asset = new Asset(assetId, hostname, ip, operatingSystem, manufacturer, model, responsible, status, location, lastLoggedUser, purchaseDate);
                      return asset;
 
                  }
@@ -133,7 +149,7 @@ public class AssetRepository {
     }
 
     public void update(Asset asset){
-        String sql = "UPDATE assets SET hostname = ?, ip = ?, operating_system = ?, manufacturer = ?, model = ?, responsible = ?, status = ?, location = ?, last_logged_user = ? WHERE id = ?";
+        String sql = "UPDATE assets SET hostname = ?, ip = ?, operating_system = ?, manufacturer = ?, model = ?, responsible = ?, status = ?, location = ?, last_logged_user = ?, purchase_date = ? WHERE id = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)){
@@ -147,7 +163,9 @@ public class AssetRepository {
                  statement.setString(7, asset.getStatus().name());
                  statement.setString(8, asset.getLocation());
                  statement.setString(9, asset.getLastLoggedUser());
-                 statement.setInt(10, asset.getId());
+                 statement.setDate(10, Date.valueOf(asset.getPurchaseDate()));
+                 statement.setInt(11, asset.getId());
+
 
 
                  statement.executeUpdate();

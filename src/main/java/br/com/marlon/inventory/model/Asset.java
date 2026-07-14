@@ -1,5 +1,7 @@
 package br.com.marlon.inventory.model;
 
+import java.time.LocalDate;
+
 public class Asset {
 
     private int id;
@@ -12,11 +14,12 @@ public class Asset {
     private AssetStatus status;
     private String location;
     private String lastLoggedUser;
+    private LocalDate purchaseDate;
 
     public Asset() {
     }
 
-    public Asset(String hostname, String ip, String operatingSystem, String manufacturer, String model, String responsible, AssetStatus status, String location, String lastLoggedUser) {
+    public Asset(String hostname, String ip, String operatingSystem, String manufacturer, String model, String responsible, AssetStatus status, String location, String lastLoggedUser, LocalDate purchaseDate) {
         this.hostname = hostname;
         this.ip = ip;
         this.operatingSystem = operatingSystem;
@@ -26,9 +29,10 @@ public class Asset {
         this.status = status;
         this.location = location;
         this.lastLoggedUser = lastLoggedUser;
+        this.purchaseDate = purchaseDate;
     }
 
-    public Asset(int id, String hostname, String ip, String operatingSystem, String manufacturer, String model, String responsible, AssetStatus status, String location, String lastLoggedUser) {
+    public Asset(int id, String hostname, String ip, String operatingSystem, String manufacturer, String model, String responsible, AssetStatus status, String location, String lastLoggedUser, LocalDate purchaseDate) {
         this.id = id;
         this.hostname = hostname;
         this.ip = ip;
@@ -39,6 +43,7 @@ public class Asset {
         this.status = status;
         this.location = location;
         this.lastLoggedUser = lastLoggedUser;
+        this.purchaseDate = purchaseDate;
     }
 
     public int getId() {
@@ -119,5 +124,13 @@ public class Asset {
 
     public void setLastLoggedUser(String lastLoggedUser) {
         this.lastLoggedUser = lastLoggedUser;
+    }
+
+    public LocalDate getPurchaseDate() {
+        return purchaseDate;
+    }
+
+    public void setPurchaseDate(LocalDate purchaseDate) {
+        this.purchaseDate = purchaseDate;
     }
 }

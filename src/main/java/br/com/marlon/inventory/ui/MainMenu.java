@@ -4,6 +4,7 @@ import br.com.marlon.inventory.model.Asset;
 import br.com.marlon.inventory.model.AssetStatus;
 import br.com.marlon.inventory.service.AssetService;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
@@ -101,7 +102,9 @@ public class MainMenu {
         System.out.print("Enter Last Logged User: ");
         String lastLoggedUser = scanner.nextLine();
 
-        Asset asset = new Asset(hostname, ip, operatingSystem, manufacturer, model, responsible, status, location, lastLoggedUser);
+        LocalDate purchaseDate = readPurchaseDate();
+
+        Asset asset = new Asset(hostname, ip, operatingSystem, manufacturer, model, responsible, status, location, lastLoggedUser, purchaseDate);
         service.save(asset);
         System.out.println("Asset registered successfully!");
 
@@ -128,6 +131,7 @@ public class MainMenu {
             System.out.println("Status: " + asset.getStatus());
             System.out.println("Location: " + asset.getLocation());
             System.out.println("Last Logged User: " + asset.getLastLoggedUser());
+            System.out.println("Purchase Date: " + asset.getPurchaseDate());
 
         }
 
@@ -155,6 +159,7 @@ public class MainMenu {
             System.out.println("Status: " + asset.getStatus());
             System.out.println("Location: " + asset.getLocation());
             System.out.println("Last Logged User: " + asset.getLastLoggedUser());
+            System.out.println("Purchase Date: " + asset.getPurchaseDate());
 
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
@@ -193,8 +198,9 @@ public class MainMenu {
             String location = scanner.nextLine();
             System.out.print("Enter new Last Logged User: ");
             String lastLoggedUser = scanner.nextLine();
+            LocalDate purchaseDate = readPurchaseDate();
 
-            Asset updatedAsset = new Asset(asset.getId(), hostname, ip, operatingSystem, manufacturer, model, responsible, status, location, lastLoggedUser);
+            Asset updatedAsset = new Asset(asset.getId(), hostname, ip, operatingSystem, manufacturer, model, responsible, status, location, lastLoggedUser, purchaseDate);
             service.update(updatedAsset);
             System.out.println("Asset updated successfully!");
 
@@ -247,6 +253,16 @@ public class MainMenu {
 
             default -> throw new IllegalArgumentException("Invalid status option.");
         };
+    }
+
+    private LocalDate readPurchaseDate(){
+        System.out.print("Enter Purchase Date YYYY-MM-DD: ");
+
+        String purchaseDateInput = scanner.nextLine();
+        LocalDate purchaseDate = LocalDate.parse(purchaseDateInput);
+
+        return purchaseDate;
+
     }
 }
 
