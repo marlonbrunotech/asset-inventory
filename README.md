@@ -373,9 +373,7 @@ Nesta fase, o delete físico foi mantido para fins de aprendizado do CRUD comple
 
 Abaixo está uma demonstração da aplicação em execução:
 
-```text
-assets/asset-inventory-demo.png
-```
+![Demonstração da aplicação](assets/asset-inventory-demo.png)
 
 ---
 
